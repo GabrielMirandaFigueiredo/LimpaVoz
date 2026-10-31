@@ -1,0 +1,23 @@
+name: Compilar VST3 (Windows)
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurar
+        run: cmake -S . -B build -A x64
+
+      - name: Compilar
+        run: cmake --build build --config Release --target LimpaVoz_VST3 --parallel
+
+      - name: Guardar o plugin
+        uses: actions/upload-artifact@v4
+        with:
+          name: LimpaVoz-VST3-Windows
+          path: build/LimpaVoz_artefacts/Release/VST3/LimpaVoz.vst3
